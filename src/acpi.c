@@ -2495,8 +2495,9 @@ acpi_reset(void *priv)
         dev->regs.gpe_io = 0x00030b9f;
         dev->regs.gpe_mul = 0x1001;
 
-        /* Fix for the IN530 CMOS reset jumper */
-        if (machines[machine].init == machine_at_in530_init)
+        /* Fix for the IN530/IN620 CMOS reset jumper */
+        if ((machines[machine].init == machine_at_in530_init) ||
+            (machines[machine].init == machine_at_in620_init))
             dev->regs.gpe_pin = 0x0003ffff;
     }
 }

@@ -143,6 +143,8 @@ const machine_filter_t machine_chipsets[] = {
     { "SiS 471",                    MACHINE_CHIPSET_SIS_471             },
     { "SiS 496",                    MACHINE_CHIPSET_SIS_496             },
     { "SiS 501",                    MACHINE_CHIPSET_SIS_501             },
+    { "SiS 530",                    MACHINE_CHIPSET_SIS_530             },
+    { "SiS 620",                    MACHINE_CHIPSET_SIS_620             },
     { "SiS 5501",                   MACHINE_CHIPSET_SIS_5501            },
     { "SiS 5511",                   MACHINE_CHIPSET_SIS_5511            },
     { "SiS 5571",                   MACHINE_CHIPSET_SIS_5571            },
@@ -25255,6 +25257,58 @@ const machine_t machines[] = {
         .snd_device               = NULL,
         .net_device               = NULL,
         .aliases                  = { "" }
+    },
+
+    /* SiS 620 */
+    /* Has the SiS 620 northbridge (with integrated AGP VGA, not emulated
+       here) and the SiS 5595 southbridge with on-chip KBC, plus a Winbond
+       W83877TF Super I/O and on-board ESS Solo-1 audio. */
+    {
+        .name              = "[SiS 620] BCM IN620",
+        .internal_name     = "in620",
+        .type              = MACHINE_TYPE_SOCKET370,
+        .chipset           = MACHINE_CHIPSET_SIS_620,
+        .init              = machine_at_in620_init,
+        .p1_handler        = machine_generic_p1_handler,
+        .gpio_handler      = NULL,
+        .available_flag    = MACHINE_AVAILABLE,
+        .gpio_acpi_handler = NULL,
+        .cpu               = {
+            .package     = CPU_PKG_SOCKET370,
+            .block       = CPU_BLOCK_NONE,
+            .min_bus     = 60000000,
+            .max_bus     = 100000000,
+            .min_voltage = 1800,
+            .max_voltage = 3500,
+            .min_multi   = 1.5,
+            .max_multi   = 8.0
+        },
+        .bus_flags = MACHINE_PS2_AGP | MACHINE_BUS_USB,
+        .flags     = MACHINE_AGP_INTERNAL | MACHINE_SUPER_IO | MACHINE_IDE_DUAL | MACHINE_SOUND |MACHINE_APM | MACHINE_ACPI | MACHINE_USB,
+        .ram       = {
+            .min  = 8192,
+            .max  = 1048576,
+            .step = 8192
+        },
+        .nvrmask                  = 255,
+        .jumpered_ecp_dma         = 0,
+        .default_jumpered_ecp_dma = -1,
+        .kbc_device               = NULL,
+        .kbc_params               = 0x00000000,
+        .nvr_device               = NULL,
+        .nvr_params               = 0x00000000,
+        .sio_device               = NULL,
+        .sio_params               = 0x00000000,
+        .kbc_p1                   = 0x00000cf0,
+        .gpio                     = 0xffffffff,
+        .gpio_acpi                = 0xffffffff,
+        .device                   = &in620_device,
+        .kbd_device               = NULL,
+        .fdc_device               = NULL,
+        .vid_device               = NULL,
+        .snd_device               = &ess_solo1_onboard_device,
+        .net_device               = NULL,
+        .aliases                  = { "GVC DR724", "Packard Bell Skye", "Packard Bell PB1030", "Monorail PC6200", "" }
     },
 
     /* SMSC VictoryBX-66 */
